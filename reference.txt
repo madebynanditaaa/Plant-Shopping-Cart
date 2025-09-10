@@ -1,0 +1,9 @@
+Database Name: plants
+
+Username: user
+
+Password: password
+
+Host: localhost or the Docker network
+
+Port: 5432 (default PostgreSQL port)
