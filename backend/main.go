@@ -62,11 +62,12 @@ func main() {
 	r.Use(enableCORS)
 
 	// API routes
-	r.HandleFunc("/products", getProducts).Methods("GET")
-	r.HandleFunc("/cart", getCart).Methods("GET")
-	r.HandleFunc("/cart", addToCart).Methods("POST")
-	r.HandleFunc("/cart/{id}", updateCartItem).Methods("PUT")
-	r.HandleFunc("/cart/{id}", deleteCartItem).Methods("DELETE")
+	// API routes
+	r.HandleFunc("/products", getProducts).Methods("GET", "OPTIONS")
+	r.HandleFunc("/cart", getCart).Methods("GET", "OPTIONS")
+	r.HandleFunc("/cart", addToCart).Methods("POST", "OPTIONS")
+	r.HandleFunc("/cart/{id}", updateCartItem).Methods("PUT", "OPTIONS")
+	r.HandleFunc("/cart/{id}", deleteCartItem).Methods("DELETE", "OPTIONS")
 
 	// Serve static files for images from ./images folder
 	imagesPath := filepath.Join(".", "images")

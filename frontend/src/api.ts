@@ -1,7 +1,7 @@
 // src/api.ts
 import type { Product, CartItem } from "./types";
 
-const API_URL = import.meta.env.VITE_API_URL || "http://localhost:8080";
+const API_URL = import.meta.env.VITE_API_BASE_URL || "http://localhost:8080";
 
 export async function fetchProducts(): Promise<Product[]> {
   const res = await fetch(`${API_URL}/products`);
@@ -15,13 +15,20 @@ export async function fetchCart(): Promise<CartItem[]> {
   return res.json();
 }
 
-export async function addToCart(productId: number): Promise<void> {
+export async function addToCart(productId: number, quantity: number = 1): Promise<any> {
   const res = await fetch(`${API_URL}/cart`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ product_id: productId, quantity: 1 }),
+    body: JSON.stringify({ product_id: productId, quantity }),
   });
-  if (!res.ok) throw new Error("Failed to add to cart");
+
+  if (!res.ok) {
+    const errorText = await res.text();
+    throw new Error(`Failed to add to cart: ${res.status} ${errorText}`);
+  }
+
+  // Return response JSON or empty object if no JSON
+  return res.json().catch(() => ({}));
 }
 
 export async function updateCartItem(id: number, quantity: number): Promise<void> {
