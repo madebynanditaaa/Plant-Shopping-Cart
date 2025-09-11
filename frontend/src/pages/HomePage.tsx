@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { fetchProducts, addToCart } from "../api";
-import ProductCard from "../components/ProductCard"; // adjust path if needed
+import ProductGrid from "../components/ProductGrid"; // add this
 import type { Product } from "../types";
 
 export default function HomePage() {
@@ -13,15 +13,7 @@ export default function HomePage() {
   return (
     <div className="home-page">
       <h1 className="page-title">Available Plants</h1>
-      <div className="product-grid">
-        {products.map((p) => (
-          <ProductCard
-            key={p.id}
-            product={p}
-            onAddToCart={(id) => addToCart(id)}
-          />
-        ))}
-      </div>
+      <ProductGrid products={products} onAddToCart={addToCart} />
     </div>
   );
 }
